@@ -1,0 +1,34 @@
+services:
+  frontend:
+    build:
+      dockerfile: frontend/Dockerfile
+    container_name: frontendContainer
+    ports:
+      - "8000:80"
+  backend:
+    build:
+      dockerfile: backend/Dockerfile
+    container_name: backendContainer
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    networks:
+      - examenInternal
+
+  mysql:
+    build:
+      dockerfile: database/Dockerfile
+    container_name: databaseContainer
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - databaseVolume:/var/lib/mysql
+    networks:
+      - examenInternal
+
+networks:
+  examenInternal:
+
+volumes:
+  databaseVolume:
